@@ -5,14 +5,14 @@
  
  * `name` The name of the the documentation given in the chosen documentation.json 
  * `params` This can be a list of strings like 
-     [ 
-         {
-             "fancyName": "foo"
-         },
-         {
-             "stupidName": "Does not explain at all"
-         }
-     ]
+ *   [ 
+ *       {
+ *           "fancyName": "foo"
+ *       },
+ *       {
+ *           "stupidName": "Does not explain at all"
+ *       }
+ *   ]
  * `returns` This shows the user what the method is supposed to return.
  * `explanation` This tells the user what the function does.
  * `errors` This tells the user what possible errors that this function can throw .
