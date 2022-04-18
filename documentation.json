@@ -1,0 +1,40 @@
+[
+	{
+		"name": "Test",
+		"params": [
+		    {
+			"name": "foo",
+			"type_of": "String",
+			"explanation": "An input for the test."
+		    },
+		    {
+			"name": "bar",
+			"type_of": "Bool",
+			"explanation": "Modifies path of the test."
+		    }
+		],
+		"returns": "void",
+		"explanation": "This is a test on the API.",
+		"errors": "None!"
+	},
+	{
+		"name": "Test1",
+		"params":{
+			"name": "foo",
+			"type_of": "String",
+			"explanation": "An input for the test."
+		},
+		"returns": "void",
+		"explanation": "This is a test on the API.",
+		"errors": "None!"
+	},
+	{
+		"name": "Test Error",
+		"causes": {
+			"name": "There are nones",
+			"cause": "None",
+			"fix": "<em>None</em>"
+		},
+		"explanation": "Hehe"
+	}
+]

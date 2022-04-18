@@ -6,6 +6,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-rustc-serialize = "0.3"
+rusty_docs={ version="0.2.0", git="https://github.com/adamkali/rusty_docs.git" }
+serde={ version = "1.0.136", features = ["derive"] }
+serde_json = "1.0"
 clap = "3.1.8"
-
+log= "0.4.16"
+env_logger = "0.6"
+unescape = "0.1"

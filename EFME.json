@@ -1,0 +1,31 @@
+[
+	{
+		"name": "Test",
+		"params": [
+			{
+				"name": "foo",
+				"type_of": "String",
+				"explanation": "An input for the test."
+			},
+			{
+				"name": "bar",
+				"type_of": "Bool",
+				"explanation": "Modifies path of the test."
+			}
+		],
+		"returns": "void",
+		"explanation": "This is a test on the API.",
+		"errors": "None!"
+	},
+	{
+		"name": "Test Error",
+		"causes": [
+			{
+				"name": "I lied",
+				"cause": "If no bar is true the server will crash.",
+				"explanation": "It was a late night."
+			}
+		],
+		"explanation": "<em>TODO</em>"
+	}
+]

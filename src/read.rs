@@ -1,57 +1,42 @@
-use crate::Json::Null;
-use crate::types::{error_type::ErrorType, doc_type::FuncType};
-
-// Built-ins
-extern crate rustc_serialize;
-use rustc_serialize::json::Json;
+use log::info;
 use std::fs::File;
-use std::io::Read;
+use std::io::{BufReader, Read};
+use rusty_docs::gtsx::{self, GenerateTsx};
+use rusty_docs::types::documentation::Doc;
 
-struct Documentation {
-    documentation_json: Json,
-    file: String,
-    function_type: FuncType,
-    error_type: ErrorType,
+pub fn init(mut doc_file: String) -> Vec<Doc> {
+    let file = File::open(doc_file).expect("Could not read file.");
+    let mut reader = BufReader::new(file);
+    let mut contents = String::new();
+    let _bytes: usize = reader
+        .read_to_string(&mut contents)
+        .expect("The File was corrupted.");
+    let res: Vec<Doc> = serde_json::from_str(&contents).expect("Unable to parse");
+    info!("{:#?}", res);
+    return res;
 }
 
-impl Documentation {
-    pub fn new() -> Documentation {
-        Documentation {
-            documentation_json: Null,
-            file: "./documentation.json".to_string(),
-            function_type: FuncType::new(),
-            error_type: ErrorType::new(),
+pub fn generate_tsx_file(filename: String, full_docs: Vec<Doc>) -> String {
+    let mut complete: String = "".to_string();
+    for doc in full_docs {
+        match doc {
+            Doc::NoneType(n) => {
+                complete += &(" ".to_string()
+                    + &gtsx::tag_wrap(
+                        "p".to_string(),
+                        "".to_string(),
+                        format!(
+                            "{} {}",
+                            &gtsx::tag_wrap("b".to_string(), "".to_string(), n.name),
+                            n.value.unwrap_or(" ".to_string())
+                        ),
+                    ))
+                    .to_string();
+            }
+            Doc::FuncType(f) => complete += &(f.generate()),
+            Doc::ErrorType(e) => complete += &(e.generate())
         }
     }
-
-    pub fn init(doc_file: String ) -> Result<(), Box<dyn std::error::Error>> {
-        let mut doc = Documentation::new();
-
-        doc.file = doc_file;
-
-        let mut f = File::open(&doc.file);
-
-        let json = match f {
-            Ok(file) => {
-                let mut data = String::new();
-                file.read_to_string(&mut data).unwrap();
-                doc.documentation_json = Json::from_str(&data).unwrap();
-
-            }
-            Err(error) => { 
-                panic!("The file: {:?} could not be found", doc.file); 
-            }
-        };
-        Ok(assert_ne!(Null, doc.documentation_json))
-    }
-
-    fn read_type(&self, type_of: String) -> () {
-        let mut value = *self.documentation_json.find_path(&["type"]).unwrap();
-
-        if (value.as_string().unwrap() == "documentation".to_string()) {
-            self.documentation_json = FuncType {
-                *self.documentation_json.find_path(&["value", ])
-            }
-        }
-    }
+    complete = gtsx::title(format!("{}", filename), "".to_string()) + &" ".to_string() + &complete;
+    return gtsx::wrapper(filename, complete);
 }
